@@ -9,7 +9,7 @@
             <h2>17:35</h2>
           </div>
         </div>
-        <p class="fact font--light">A million words would not bring you back, I know because I tried, neither would a million tears, I know because I cried.</p>
+        <p class="fact font--light"> {{selectedFactsType.fact}} </p>
         <button @click="updateFact();" type="button" name="button">Click</button>
       </article>
       <article class="right">
@@ -33,7 +33,7 @@
     <div class="settings-content">
       <div class="facts-settings">
         <p>Facts :</p>
-        <div v-for="fact in facts" class="facts-settings__fact">
+        <div v-for="fact in factsTypes" class="facts-settings__fact">
           <input @input="updateFact(fact);" :id="fact.id" type="radio" name="fact" :value="fact.id">
           <label :for="fact.id">{{ fact.name }}</label>
         </div>
@@ -66,36 +66,30 @@ export default {
         name: "Street",
         url: "/images/background01.png",
       },
-      selectedFacts: {
-        name: "Cats",
-        id: "cats",
+      selectedFactsType: {
+        url: "",
         fact: String,
       },
-      facts: [{
+      factsTypes: [{
         name: "Cats",
         id: "cats",
         off: false,
-        fetchURL: "https://cat-fact.herokuapp.com/facts",
+        url: "https://catfact.ninja/fact",
       }, {
         name: "Dogs",
         id: "dogs",
         off: false,
-        fetchURL: "https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1",
+        url: "https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1",
       }, {
         name: "Axolotls",
         id: "axolotls",
         off: false,
-        fetchURL: "https://axoltlapi.herokuapp.com/",
+        url: "https://axoltlapi.herokuapp.com/",
       }, {
         name: "Anime Quotes",
         id: "anime_quotes",
         off: false,
-        fetchURL: "https://animechan.vercel.app/api/random",
-      }, {
-        name: "General Facts (max. 5/h)",
-        id: "general_facts",
-        off: false,
-        fetchURL: "https://api.fungenerators.com/fact/random",
+        url: "https://animechan.vercel.app/api/random",
       }, {
         name: "Off",
         id: "off",
@@ -141,18 +135,37 @@ export default {
       this.selectedImage.url = image.url;
       this.selectedImage.name = image.name;
     },
-    updateFact(facts) {
-      this.selectedFacts.name = facts.name;
-      this.selectedFacts.id = facts.id;
-      this.selectedFacts.fact = this.fetchFact(facts.fetchURL);
-      console.log(this.selectedFacts)
+    updateFact(factsType) {
+      this.selectedFactsType.url = factsType.url;
+      this.selectedFactsType.id = factsType.id;
+      this.selectedFactsType.fact = this.fetchFact(this.selectedFactsType.url);
+      console.log(this.selectedFactsType)
     },
     async fetchFact(url) {
+
       try {
-        const response = await fetch(url, {
+        const response = await fetch(`https://cors-anywhere.herokuapp.com/${url}`, {
           mode: "cors"
         });
-        console.log(response);
+        const responseJon = await response.json();
+
+        switch (this.selectedFactsType.id) {
+          case "cats":
+            this.selectedFactsType.fact = responseJon.fact;
+            break;
+          case "dogs":
+            this.selectedFactsType.fact = responseJon[0].fact;
+            break;
+          case "axolotls":
+            this.selectedFactsType.fact = responseJon.facts;
+            break;
+          case "anime_quotes":
+            this.selectedFactsType.fact = responseJon.quote;
+            break;
+        }
+
+
+        console.log(responseJon)
       }
       catch (e) {
         console.log(e);
