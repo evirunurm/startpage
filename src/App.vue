@@ -19,32 +19,31 @@
       </article>
     </section>
     <section class="bottom">
-      <links-container v-for="shortcut in shortcuts" :name=shortcut.name :links=shortcut.links />
+      <links-container v-on:modifyShortcuts="modifyShortcuts" v-for="shortcut in shortcuts" :name=shortcut.name :links=shortcut.links :index="shortcuts.indexOf(shortcut)"/>
     </section>
   </div>
-  <div class="settings-container">
+  <div class="settings-container" >
     <div class="settings-button"  @click="isOptionsOpen = !isOptionsOpen">
       <img src="./assets/settings.png" alt="">
     </div>
-    <div class="settings-content" v-if="isOptionsOpen">
+    <div class="settings-content" v-show="isOptionsOpen">
       <div class="facts-settings">
         <p>Facts :</p>
-        <div v-for="fact in factsTypes" class="facts-settings__fact">
+        <div  v-for="fact in factsTypes" class="facts-settings__fact">
           <input @input="updateFact(fact);saveDataToLocal();" :id="fact.id" type="radio" name="fact" :value="fact.id" :checked="fact.id == selectedFactsType.id">
           <label :for="fact.id">{{ fact.name }}</label>
         </div>
       </div>
       <div class="image-settings-container">
         <div class="image-settings" >
-          <div @click="" class="image-settings-left">
+          <div @click="moveImageSlider('left');saveDataToLocal();" class="image-settings-left">
           </div>
-            <div class="image-settings-names">
-                <div class="image-settings-name">
+            <div class="image-settings-names" >
+                <div id="imageSlider" ref="imageSlider" class="image-settings-name">
                   <p v-for="image in images" class="image-name">{{ image.name }}</p>
                 </div>
             </div>
-
-          <div @click="updateImage(image);saveDataToLocal();" class="image-settings-right">
+          <div @click="moveImageSlider('right');saveDataToLocal();" class="image-settings-right">
           </div>
         </div>
       </div>
@@ -99,42 +98,34 @@ export default {
         {
           name: "Retro",
           url: "/images/background01.png",
-          selected: true,
         },
         {
           name: "Forest",
           url: "/images/background02.png",
-          selected: Boolean,
-      },
+        },
         {
           name: "Puffy",
           url: "/images/background03.png",
-          selected: Boolean,
         },
         {
           name: "Night Moon",
           url: "/images/background04.png",
-          selected: Boolean,
         },
         {
           name: "Sunset Moon",
           url: "/images/background05.png",
-          selected: Boolean,
         },
         {
           name: "Street",
           url: "/images/background06.png",
-          selected: Boolean,
         },
         {
           name: "Coming Home",
           url: "/images/background07.png",
-          selected: Boolean,
         },
         {
           name: "Traveling Home",
           url: "/images/background08.png",
-          selected: Boolean,
         }
       ],
       isOptionsOpen: false,
@@ -144,10 +135,10 @@ export default {
           links: [
             {
               name: "discord",
-              link: "https://discord.com/channels/@me"
+              url: "https://discord.com/channels/@me"
             },{
               name: "whatsapp",
-              link: "https://discord.com/channels/@me"
+              url: "https://discord.com/channels/@me"
             },
           ]
         },
@@ -156,7 +147,7 @@ export default {
           links: [
             {
               name: "discord",
-              link: "https://discord.com/channels/@me"
+              url: "https://discord.com/channels/@me"
             },
           ]
         },
@@ -165,7 +156,7 @@ export default {
           links: [
             {
               name: "discord",
-              link: "https://discord.com/channels/@me"
+              url: "https://discord.com/channels/@me"
             },
           ]
         },
@@ -174,7 +165,7 @@ export default {
           links: [
             {
               name: "discord",
-              link: "https://discord.com/channels/@me"
+              url: "https://discord.com/channels/@me"
             },
           ]
         }
@@ -185,6 +176,24 @@ export default {
     updateImage(image) {
       this.selectedImage.url = image.url;
       this.selectedImage.name = image.name;
+    },
+    moveImageSlider(direction) {
+      const currentIndex = this.images.indexOf(this.images.find( image => {
+        return this.selectedImage.name == image.name;
+      }));
+      this.$refs.imageSlider.style.left = `-${ currentIndex * 200 }px`;
+      // Moving the slider
+      if (direction) {
+        let nextIndex;
+        if (direction == "left") {
+          nextIndex = (currentIndex == 0) ? this.images.length - 1 : currentIndex - 1;
+        } else if (direction == "right") {
+          nextIndex = (currentIndex == this.images.length - 1) ? 0 : currentIndex + 1;
+        }
+        this.updateImage(this.images[nextIndex]);
+        this.$refs.imageSlider.style.left = `-${ nextIndex * 200 }px`;
+        this.saveDataToLocal();
+      }
     },
     updateFact(factsType) {
       if (factsType?.id == "off") {
@@ -199,7 +208,6 @@ export default {
           this.saveDataToLocal();
         });
       }
-
     },
     fetchFact(url) {
       const response = new Promise(async (resolve, reject) => {
@@ -231,14 +239,24 @@ export default {
     getLocalData() {
      if (localStorage.selectedImage) {
         this.selectedImage = JSON.parse(localStorage.getItem("selectedImage"));
+        this.moveImageSlider();
       }
       if (localStorage.selectedFactsType) {
         this.selectedFactsType = JSON.parse(localStorage.getItem("selectedFactsType"));
+      }
+      if (localStorage.shortcuts) {
+        this.shortcuts = JSON.parse(localStorage.getItem("shortcuts"));
       }
     },
     saveDataToLocal() {
       localStorage.setItem("selectedImage", JSON.stringify(this.selectedImage));
       localStorage.setItem("selectedFactsType", JSON.stringify(this.selectedFactsType));
+      localStorage.setItem("shortcuts", JSON.stringify(this.shortcuts));
+    },
+    modifyShortcuts(index, name, links) {
+      this.shortcuts[index].name = name;
+      this.shortcuts[index].links = links;
+      this.saveDataToLocal()
     }
   },
   mounted() {
@@ -355,22 +373,20 @@ body {
 }
 
 .image-settings-name p {
-  background: pink;
-  min-width: 100%;
+  min-width: 200px;
+  text-align: center;
 }
 
 .image-settings-name {
-  background: red;
   display: flex;
-/*  position: relative;
-  left: -200%;*/
+  position: relative;
 }
 
 .image-settings-names {
-  display: flex;
   overflow: hidden;
-  width: 100px;
-  background: green;
+  width: 200px;
+  box-shadow: 0 0 0 2px var(--white);
+  padding: 0.2rem 0rem;
 }
 
 .settings-container {
@@ -382,8 +398,6 @@ body {
   align-items: end;
   gap: 0.5rem;
 }
-
-
 
 .settings-content {
   background: var(--grey);
