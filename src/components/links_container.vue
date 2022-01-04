@@ -1,11 +1,9 @@
 <template>
 <div class="links-container">
-  <h3 class="links-folder-name font--light">_general</h3>
+  <h3 class="links-folder-name font--light">_{{ name }}</h3>
   <div class="links font--light">
-    <p class="link">whatsapp</p>
-    <p class="link">discord</p>
-    <p class="link">anilist</p>
-    <p class="link">animeflv</p>
+    <p v-for="link in links" class="link"><a :href=link.link>{{ link.name }}</a></p>
+
   </div>
 
 </div>
@@ -14,7 +12,8 @@
 <script>
 export default {
   props: {
-
+    name: String,
+    links: Array,
   },
   data() {
     return {
@@ -37,5 +36,13 @@ export default {
 
 .link {
   padding: 0.25em;
+}
+
+a {
+  color: var(--white);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: line-through;
 }
 </style>

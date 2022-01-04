@@ -10,7 +10,7 @@
           </div>
         </div>
         <p class="fact font--light"> {{selectedFactsType.fact}} </p>
-        <button @click="updateFact();" type="button" name="button">Click</button>
+        <button @click="updateFact(selectedFactsType);" type="button" name="button">Click</button>
       </article>
       <article class="right">
         <div class="img-container">
@@ -18,35 +18,33 @@
         </div>
       </article>
     </section>
-    <hr />
     <section class="bottom">
-      <links-container />
-      <links-container />
-      <links-container />
-      <links-container />
+      <links-container v-for="shortcut in shortcuts" :name=shortcut.name :links=shortcut.links />
     </section>
   </div>
   <div class="settings-container">
-    <div class="settings-button">
+    <div class="settings-button"  @click="isOptionsOpen = !isOptionsOpen">
       <img src="./assets/settings.png" alt="">
     </div>
-    <div class="settings-content">
+    <div class="settings-content" v-if="isOptionsOpen">
       <div class="facts-settings">
         <p>Facts :</p>
         <div v-for="fact in factsTypes" class="facts-settings__fact">
-          <input @input="updateFact(fact);" :id="fact.id" type="radio" name="fact" :value="fact.id">
+          <input @input="updateFact(fact);saveDataToLocal();" :id="fact.id" type="radio" name="fact" :value="fact.id" :checked="fact.id == selectedFactsType.id">
           <label :for="fact.id">{{ fact.name }}</label>
         </div>
-
       </div>
       <div class="image-settings-container">
-        <div v-for="image in images" class="image-settings">
-          <div @click="updateImage(image);" class="image-settings-left">
+        <div class="image-settings" >
+          <div @click="" class="image-settings-left">
           </div>
-          <div class="image-settings-name">
-            <p class="image-name">{{ image.name }}</p>
-          </div>
-          <div @click="updateImage(image);" class="image-settings-right">
+            <div class="image-settings-names">
+                <div class="image-settings-name">
+                  <p v-for="image in images" class="image-name">{{ image.name }}</p>
+                </div>
+            </div>
+
+          <div @click="updateImage(image);saveDataToLocal();" class="image-settings-right">
           </div>
         </div>
       </div>
@@ -68,66 +66,119 @@ export default {
       },
       selectedFactsType: {
         url: "",
-        fact: String,
-      },
-      factsTypes: [{
-        name: "Cats",
-        id: "cats",
-        off: false,
-        url: "https://catfact.ninja/fact",
-      }, {
-        name: "Dogs",
-        id: "dogs",
-        off: false,
-        url: "https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1",
-      }, {
-        name: "Axolotls",
-        id: "axolotls",
-        off: false,
-        url: "https://axoltlapi.herokuapp.com/",
-      }, {
-        name: "Anime Quotes",
-        id: "anime_quotes",
-        off: false,
-        url: "https://animechan.vercel.app/api/random",
-      }, {
-        name: "Off",
+        fact: "",
         id: "off",
-        off: true,
-      }],
-      images: [{
-        name: "Retro",
-        url: "/images/background01.png",
-        selected: true,
-      }, {
-        name: "Forest",
-        url: "/images/background02.png",
-        selected: Boolean,
-      }, {
-        name: "Puffy",
-        url: "/images/background03.png",
-        selected: Boolean,
-      }, {
-        name: "Night Moon",
-        url: "/images/background04.png",
-        selected: Boolean,
-      }, {
-        name: "Sunset Moon",
-        url: "/images/background05.png",
-        selected: Boolean,
-      }, {
-        name: "Street",
-        url: "/images/background06.png",
-        selected: Boolean,
-      }, {
-        name: "Coming Home",
-        url: "/images/background07.png",
-        selected: Boolean,
-      }, {
-        name: "Traveling Home",
-        url: "/images/background08.png",
-        selected: Boolean,
-      }],
+      },
+      factsTypes: [
+        {
+          name: "Cats",
+          id: "cats",
+          url: "https://catfact.ninja/fact",
+        },
+        {
+          name: "Dogs",
+          id: "dogs",
+          url: "http://dog-api.kinduff.com/api/facts",
+        },
+        {
+          name: "Axolotls",
+          id: "axolotls",
+          url: "https://axoltlapi.herokuapp.com/",
+        },
+        {
+          name: "Anime Quotes",
+          id: "anime_quotes",
+          url: "https://animechan.vercel.app/api/random",
+        },
+        {
+          name: "Off",
+          id: "off",
+        }
+      ],
+      images: [
+        {
+          name: "Retro",
+          url: "/images/background01.png",
+          selected: true,
+        },
+        {
+          name: "Forest",
+          url: "/images/background02.png",
+          selected: Boolean,
+      },
+        {
+          name: "Puffy",
+          url: "/images/background03.png",
+          selected: Boolean,
+        },
+        {
+          name: "Night Moon",
+          url: "/images/background04.png",
+          selected: Boolean,
+        },
+        {
+          name: "Sunset Moon",
+          url: "/images/background05.png",
+          selected: Boolean,
+        },
+        {
+          name: "Street",
+          url: "/images/background06.png",
+          selected: Boolean,
+        },
+        {
+          name: "Coming Home",
+          url: "/images/background07.png",
+          selected: Boolean,
+        },
+        {
+          name: "Traveling Home",
+          url: "/images/background08.png",
+          selected: Boolean,
+        }
+      ],
+      isOptionsOpen: false,
+      shortcuts: [
+        {
+          name: "general",
+          links: [
+            {
+              name: "discord",
+              link: "https://discord.com/channels/@me"
+            },{
+              name: "whatsapp",
+              link: "https://discord.com/channels/@me"
+            },
+          ]
+        },
+        {
+          name: "general",
+          links: [
+            {
+              name: "discord",
+              link: "https://discord.com/channels/@me"
+            },
+          ]
+        },
+        {
+          name: "general",
+          links: [
+            {
+              name: "discord",
+              link: "https://discord.com/channels/@me"
+            },
+          ]
+        },
+        {
+          name: "general",
+          links: [
+            {
+              name: "discord",
+              link: "https://discord.com/channels/@me"
+            },
+          ]
+        }
+      ]
     }
   },
   methods: {
@@ -136,43 +187,62 @@ export default {
       this.selectedImage.name = image.name;
     },
     updateFact(factsType) {
-      this.selectedFactsType.url = factsType.url;
-      this.selectedFactsType.id = factsType.id;
-      this.selectedFactsType.fact = this.fetchFact(this.selectedFactsType.url);
-      console.log(this.selectedFactsType)
-    },
-    async fetchFact(url) {
+      if (factsType?.id == "off") {
+        this.selectedFactsType.fact = "";
+        this.selectedFactsType.id = "off";
+        return;
+      } else {
+        this.selectedFactsType.id = factsType.id;
+        this.selectedFactsType.url = factsType.url;
+        this.fetchFact(this.selectedFactsType.url).then((fact) => {
+          this.selectedFactsType.fact = fact;
+          this.saveDataToLocal();
+        });
+      }
 
-      try {
-        const response = await fetch(`https://cors-anywhere.herokuapp.com/${url}`, {
+    },
+    fetchFact(url) {
+      const response = new Promise(async (resolve, reject) => {
+        let res = await fetch(`https://cors-anywhere.herokuapp.com/${url}`, {
           mode: "cors"
         });
-        const responseJon = await response.json();
-
+        let json = await res.json();
+        let fact;
         switch (this.selectedFactsType.id) {
           case "cats":
-            this.selectedFactsType.fact = responseJon.fact;
+            fact = json.fact;
             break;
           case "dogs":
-            this.selectedFactsType.fact = responseJon[0].fact;
+            fact = json.facts[0];
             break;
           case "axolotls":
-            this.selectedFactsType.fact = responseJon.facts;
+            fact = json.facts;
             break;
           case "anime_quotes":
-            this.selectedFactsType.fact = responseJon.quote;
+            fact = json.quote;
             break;
+          default:
+            fact = "";
         }
-
-
-        console.log(responseJon)
+        resolve(fact);
+      });
+      return response;
+    },
+    getLocalData() {
+     if (localStorage.selectedImage) {
+        this.selectedImage = JSON.parse(localStorage.getItem("selectedImage"));
       }
-      catch (e) {
-        console.log(e);
+      if (localStorage.selectedFactsType) {
+        this.selectedFactsType = JSON.parse(localStorage.getItem("selectedFactsType"));
       }
-
-      return "";
+    },
+    saveDataToLocal() {
+      localStorage.setItem("selectedImage", JSON.stringify(this.selectedImage));
+      localStorage.setItem("selectedFactsType", JSON.stringify(this.selectedFactsType));
     }
+  },
+  mounted() {
+    this.getLocalData();
   },
   components: {
     LinksContainer,
@@ -182,7 +252,6 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@100;200;300;400;500;600&display=swap');
-
 
 :root {
   --grey: #2C2C2C;
@@ -223,7 +292,6 @@ body {
   width: 70%;
   height: 60%;
 }
-
 .top {
   display: flex;
   width: 40em;
@@ -269,10 +337,6 @@ body {
   color: white;
 }
 
-hr {
-  width: 100%;
-}
-
 .image-settings {
   display: flex;
   align-items: center;
@@ -288,5 +352,45 @@ hr {
 
 .image-settings-right {
   background-color: green;
+}
+
+.image-settings-name p {
+  background: pink;
+  min-width: 100%;
+}
+
+.image-settings-name {
+  background: red;
+  display: flex;
+/*  position: relative;
+  left: -200%;*/
+}
+
+.image-settings-names {
+  display: flex;
+  overflow: hidden;
+  width: 100px;
+  background: green;
+}
+
+.settings-container {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 0.5rem;
+}
+
+
+
+.settings-content {
+  background: var(--grey);
+  border: 1px solid var(--white);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 </style>

@@ -1,0 +1,5 @@
+Dogs : https://dukengn.github.io/Dog-facts-API/ --> https://dog-facts-api.herokuapp.com/api/v1/resources/dogs/?number=1
+Cats : https://alexwohlbruck.github.io/cat-facts/ --> https://cat-fact.herokuapp.com/facts
+Axolotls : https://axoltlapi.herokuapp.com/ --> https://axoltlapi.herokuapp.com/
+Anime Quotes : https://animechan.vercel.app/ --> https://animechan.vercel.app/api/random
+General Facts : https://fungenerators.com/api/facts/ --> https://api.fungenerators.com/fact/random  (MAX 5hour / 50day)
