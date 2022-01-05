@@ -4,10 +4,11 @@
       <p>{{ link.name }}</p>
       <div class="link-title--options">
         <div class="div" @click="deleteLink();" ></div>
-        <div class="div div--green" @click="isEditingLink=!isEditingLink" ></div>
+        <i class="fas fa-trash"></i>
+        <div class="div div--green" @click="isEditing=!isEditing" ></div>
       </div>
     </div>
-    <div class="link-details" v-show="isEditingLink">
+    <div class="link-details" v-show="isEditing">
       <input v-model="link.name" type="text">
       <input v-model="link.url" type="text">
     </div>
@@ -19,11 +20,10 @@ export default {
   name: "link_editor.vue",
   props: {
     link: Object,
-    isEditingLink: Boolean,
   },
   data() {
     return {
-      /*sEditing: isEditingLink,*/
+      isEditing: false,
     }
   },
   methods: {
@@ -44,6 +44,7 @@ export default {
 .link-title {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 0.75rem;
 }
 
 .link-details input {
