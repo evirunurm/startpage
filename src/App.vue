@@ -280,11 +280,15 @@ export default {
       if (localStorage.shortcuts) {
         this.shortcuts = JSON.parse(localStorage.getItem("shortcuts"));
       }
+      if (localStorage.colors) {
+        this.colors = JSON.parse(localStorage.getItem("colors"));
+      }
     },
     saveDataToLocal() {
       localStorage.setItem("selectedImage", JSON.stringify(this.selectedImage));
       localStorage.setItem("selectedFactsType", JSON.stringify(this.selectedFactsType));
       localStorage.setItem("shortcuts", JSON.stringify(this.shortcuts));
+      localStorage.setItem("colors", JSON.stringify(this.colors));
     },
     modifyShortcuts(index, name, links) {
       this.shortcuts[index].name = name;
@@ -307,7 +311,7 @@ export default {
       for (const color in this.colors) {
         document.querySelector(':root').style.setProperty(`--${color}Color`, this.colors[color]);
       }
-      // document.querySelector(':root').style.setProperty(`--red`, "red");
+      this.saveDataToLocal();
     }
   },
   mounted() {
@@ -486,7 +490,36 @@ body {
   gap: 0.25rem;
 }
 
+.facts-settings__fact {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.facts-settings__fact input, .facts-settings__fact label {
+  cursor: pointer;
+}
 .facts-settings p {
   margin-bottom: 0.25rem;
+}
+
+.color-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.color-settings p {
+  margin-bottom: 0.5rem;
+}
+
+.color-settings div {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.color-settings div input, .color-settings div label {
+  border: none;
+  cursor: pointer;
 }
 </style>

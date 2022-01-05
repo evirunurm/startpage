@@ -3,15 +3,6 @@
     <div class="link-title">
       <p v-show="!isEditing" @dblclick="isEditing = true;selectNameInput();">{{ link.name }}</p>
       <div class="link-title--options">
-        <button class="edit-link" @click="deleteLink();" >
-          <svg width="20" height="20" viewBox="0 0 58 76" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 18L54 18" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M7 31V59C7 66.1797 12.8203 72 20 72H37C44.1797 72 50 66.1797 50 59V31" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M35.5732 18C35.8496 17.2181 36 16.3766 36 15.5C36 11.3579 32.6421 8 28.5 8C24.3579 8 21 11.3579 21 15.5C21 16.3766 21.1504 17.2181 21.4268 18H13.2006C13.0686 17.1862 13 16.3511 13 15.5C13 6.93959 19.9396 0 28.5 0C37.0604 0 44 6.93959 44 15.5C44 16.3511 43.9314 17.1862 43.7994 18H35.5732Z" fill="white"/>
-            <path d="M22 39L35 52" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M35 39L22 52" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
         <button v-show="!isEditing" class="edit-link" @click="isEditing=!isEditing">
           <svg width="18" height="18" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M43.1858 12.565C44.7479 11.0029 47.2806 11.0029 48.8427 12.565L57.5417 21.264C59.1038 22.8261 59.1038 25.3588 57.5417 26.9209L26.888 57.5745C25.3259 59.1366 22.7933 59.1366 21.2312 57.5745L12.5322 48.8755C10.9701 47.3134 10.9701 44.7808 12.5322 43.2187L43.1858 12.565ZM21.0175 46.0471L24.0596 49.0892L49.0564 24.0924L46.0142 21.0503L21.0175 46.0471Z" fill="white"/>
@@ -22,6 +13,15 @@
         <button v-show="isEditing" class="edit-link" @click="isEditing=!isEditing">
           <svg width="20" height="20" viewBox="0 0 51 35" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M4 13.9L20.6735 31L47 4" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="edit-link" @click="deleteLink();" >
+          <svg width="20" height="20" viewBox="0 0 58 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 18L54 18" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7 31V59C7 66.1797 12.8203 72 20 72H37C44.1797 72 50 66.1797 50 59V31" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M35.5732 18C35.8496 17.2181 36 16.3766 36 15.5C36 11.3579 32.6421 8 28.5 8C24.3579 8 21 11.3579 21 15.5C21 16.3766 21.1504 17.2181 21.4268 18H13.2006C13.0686 17.1862 13 16.3511 13 15.5C13 6.93959 19.9396 0 28.5 0C37.0604 0 44 6.93959 44 15.5C44 16.3511 43.9314 17.1862 43.7994 18H35.5732Z" fill="white"/>
+            <path d="M22 39L35 52" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M35 39L22 52" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
       </div>
