@@ -4,9 +4,9 @@
     <section class="top">
       <article class="left">
         <div class="today-info">
-          <h1 class="date font--light">Monday, 11th Oct 2021</h1>
+          <h1 class="date font--light">{{ this.date }}</h1>
           <div class="clock">
-            <h2>17:35</h2>
+            <h2>{{ this.time }}</h2>
           </div>
         </div>
         <p class="fact font--light"> {{selectedFactsType.fact}} </p>
@@ -202,7 +202,9 @@ export default {
         secondary: "#57455d",
         background: "#2c2c2c",
         font: "#b9b9b9",
-      }
+      },
+      time: "",
+      date: "",
     }
   },
   methods: {
@@ -312,12 +314,77 @@ export default {
         document.querySelector(':root').style.setProperty(`--${color}Color`, this.colors[color]);
       }
       this.saveDataToLocal();
-    }
+    },
+    getDate() {
+      const months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ];
+      const date = new Date();
+      let day = date.getDate();
+      let dateString = "";
+
+      switch (date.getDay()) {
+        case 0:
+          dateString += "Sunday, ";
+          break;
+        case 1:
+          dateString += "Monday, ";
+          break;
+        case 2:
+          dateString += "Tuesday, ";
+          break;
+        case 3:
+          dateString += "Wednesday, ";
+          break;
+        case 4:
+          dateString += "Thursday, ";
+          break;
+        case 5:
+          dateString += "Friday, ";
+          break;
+        case 6:
+          dateString += "Saturday, ";
+          break;
+      }
+      dateString += day;
+      if (day === 1) {
+        dateString +=  "st"
+      }else if (day === 2) {
+        dateString +=  "nd"
+      } else if (day === 3) {
+        dateString +=  "rd"
+      } else {
+        dateString +=  "th"
+      }
+      dateString += " " + months[date.getMonth()].slice(0,3) + " " + date.getFullYear();
+      this.date = dateString;
+    },
+    getTime() {
+      const date = new Date();
+      this.time = date.getHours().toString().padStart(2,'0') + ":" + date.getMinutes().toString().padStart(2,'0');
+    },
+
   },
   mounted() {
     this.getLocalData();
     this.prepareToClosePopup();
     this.updateColors();
+    this.getDate();
+    this.getTime();
+    setInterval( () => {
+      this.getTime()
+    }, 1000);
   },
   components: {
     LinksContainer,
@@ -371,6 +438,9 @@ body {
   max-width: 700px;
   height: 60%;
 }
+
+
+
 .top {
   display: flex;
   gap: 2.5rem;
@@ -386,9 +456,22 @@ body {
 }
 
 .left button {
+  font-size: 1rem;
+  border: none;
   align-self: end;
-  padding: 0.25rem 1.5rem;
+  padding: 0.5rem 1.75rem;
+  background: var(--secondaryColor);
+  color: var(--primaryColor);
+  cursor: pointer;
 }
+
+.left button:hover {
+  background: var(--primaryColor);
+  color: var(--secondaryColor)
+}
+
+
+
 
 .right {
   display: flex;
@@ -418,7 +501,7 @@ body {
 .clock h2 {
   font-size: 3em;
   font-weight: 500;
-  color: white;
+  opacity: 50%;
 }
 
 .image-settings {

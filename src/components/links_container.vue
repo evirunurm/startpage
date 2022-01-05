@@ -158,8 +158,8 @@ a:hover {
 .add-link {
   cursor: pointer;
   opacity: 20%;
-  align-self: center;
   transition: opacity 0.08s ease-in-out;
+  align-self: flex-start;
 }
 
 .add-link:hover, .editor--save:hover {
