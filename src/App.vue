@@ -111,7 +111,7 @@ export default {
         {
           name: "Dogs",
           id: "dogs",
-          url: "http://dog-api.kinduff.com/api/facts",
+          url: "https://dog-api.kinduff.com/api/facts",
         },
         {
           name: "Axolotls",
@@ -253,7 +253,7 @@ export default {
     fetchFact(url) {
       const response = new Promise(async (resolve, reject) => {
         let res = await fetch(url, {
-          mode: "cors"
+          mode: "cors",
         });
         let json = await res.json();
         let fact;
