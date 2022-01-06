@@ -81,7 +81,7 @@
           <input @input="updateColors()" type="color" id="--fontColorColor" v-model="colors.font">
         </div>
       </div>
-      <p class="credits">Developed by Evelin Virunurm</p>
+      <p class="credits">Developed by <a target="_blank" href="https://github.com/evirunurm">Evelin Virunurm</a></p>
     </div>
   </div>
 </div>
@@ -384,6 +384,7 @@ export default {
     deleteShortcut(index) {
       console.log("done")
       this.shortcuts.splice(index,1);
+      this.saveDataToLocal();
     },
     addShortcut() {
       if (this.shortcuts.length < 4) {
@@ -394,6 +395,7 @@ export default {
       } else {
         alert("There's a maximum amount of 4 folders, sorry:))");
       }
+      this.saveDataToLocal();
     }
   },
   mounted() {
@@ -415,6 +417,15 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@100;200;300;400;500;600&display=swap');
 
+rect, path, svg {
+  stroke: var(--fontColor);
+  fill: var(--fontColor);
+}
+
+.save svg, .save path {
+  fill: none;
+}
+
 :root {
   --black: rgba(0,0,0)
 }
@@ -435,6 +446,15 @@ body {
   background-color: var(--backgroundColor);
   color: var(--fontColor);
   display: flex;
+}
+
+a {
+  color: var(--fontColor);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: line-through;
 }
 
 .font--light {
@@ -482,6 +502,7 @@ body {
   background: var(--secondaryColor);
   color: var(--primaryColor);
   cursor: pointer;
+  transition: 0.08s ease-in-out;
 }
 
 .left button:hover {
