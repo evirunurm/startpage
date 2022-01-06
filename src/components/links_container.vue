@@ -1,7 +1,7 @@
 <template>
 <div class="links-container">
   <article :id="index + 'folder'" class="links-folder" @mouseover="hover = true"  @mouseleave="hover = false">
-    <h3 class="links-folder-name font--light" >_{{ name }}</h3>
+    <h3 class="links-folder-name font--light" >{{ name }}</h3>
     <div class="links-folder--edit" v-show="hover" @click="isEditing = !isEditing;checkEditorPosition(this);">
       <svg width="15" height="15" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M54.7132 24.0924L24.0596 54.7461L15.3606 46.0471L46.0142 15.3934L54.7132 24.0924Z" fill="white" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
