@@ -9,6 +9,12 @@
         <path d="M14.8443 61.8689L8.13115 54.9743L4 66L14.8443 61.8689Z" fill="white" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
+    <div class="links-folder--delete" v-show="hover" @click="deleteContainer()">
+      <svg width="13" height="13" viewBox="0 0 39 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 4L35 35" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M35 4L4 35" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
     <section class="folder-editor" v-show="isEditing">
       <input class="input-name" v-model="name" type="text" maxlength="20">
       <link_editor v-on:deleteLink="deleteLink" v-for="link in links" :link=link />
@@ -43,10 +49,13 @@ export default {
     links: Array,
   },
   data() {
+    const self = this;
     return {
       hover: false,
       isEditing: false,
-      isEditingLink: false,
+      removePopupListener: function(event) {
+        self.closePopup(event);
+      },
     }
   },
   methods: {
@@ -68,16 +77,21 @@ export default {
       }
     },
     prepareToClosePopup() {
-      document.body.addEventListener("mousedown", (event) => {
-        this.closePopup(event);
-      })
+      document.body.addEventListener("mousedown", this.removePopupListener)
     },
     closePopup(event) {
       let popup = document.getElementById(`${this.index}folder`);
-      if (event.target === popup || popup.contains(event.target)) {
-        return;
+      if (popup) {
+        if (event.target === popup || popup.contains(event.target)) {
+          return;
+        }
+        this.isEditing = false;
       }
+    },
+    deleteContainer() {
+      document.body.removeEventListener("mousedown", this.removePopupListener);
       this.isEditing = false;
+      this.$emit('deleteContainer', this.index);
     }
   },
   mounted() {
@@ -113,7 +127,7 @@ a:hover {
 }
 
 .links-folder {
-  padding: 2.5rem;
+  padding: 1rem 2.75rem;
   display: flex;
   position: relative;
 }
@@ -124,13 +138,25 @@ a:hover {
 
 .links-folder--edit {
   position: absolute;
-  right: 0.5rem;
-  bottom: 42px;
+  right: 1.3rem;
+  bottom: 18px;
   cursor: pointer;
   opacity: 30%;
 }
 
 .links-folder--edit:hover {
+  opacity: 80%;
+}
+
+.links-folder--delete {
+  position: absolute;
+  right: 0;
+  bottom: 18px;
+  cursor: pointer;
+  opacity: 30%;
+}
+
+.links-folder--delete:hover {
   opacity: 80%;
 }
 

@@ -18,8 +18,15 @@
         </div>
       </article>
     </section>
+    <div class="separator"></div>
     <section class="bottom">
-      <links-container v-on:modifyShortcuts="modifyShortcuts" v-for="shortcut in shortcuts" :name=shortcut.name :links=shortcut.links :index="shortcuts.indexOf(shortcut)"/>
+      <links-container v-on:deleteContainer="deleteShortcut" v-on:modifyShortcuts="modifyShortcuts" v-for="shortcut in shortcuts" :name=shortcut.name :links=shortcut.links :index="shortcuts.indexOf(shortcut)"/>
+      <div v-if="shortcuts.length < 4" class="add-link-container" @click="addShortcut">
+        <svg width="18" height="18" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 4V39" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M39 22L4 22" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
     </section>
   </div>
   <div id="settings" class="settings-container" >
@@ -246,7 +253,7 @@ export default {
     },
     fetchFact(url) {
       const response = new Promise(async (resolve, reject) => {
-        let res = await fetch(`https://cors-anywhere.herokuapp.com/${url}`, {
+        let res = await fetch(url, {
           mode: "cors"
         });
         let json = await res.json();
@@ -374,7 +381,20 @@ export default {
       const date = new Date();
       this.time = date.getHours().toString().padStart(2,'0') + ":" + date.getMinutes().toString().padStart(2,'0');
     },
-
+    deleteShortcut(index) {
+      console.log("done")
+      this.shortcuts.splice(index,1);
+    },
+    addShortcut() {
+      if (this.shortcuts.length < 4) {
+        this.shortcuts.push({
+          name: "new",
+          links: []
+        });
+      } else {
+        alert("There's a maximum amount of 4 folders, sorry:))");
+      }
+    }
   },
   mounted() {
     this.getLocalData();
@@ -436,10 +456,8 @@ body {
   justify-content: space-around;
   width: 70%;
   max-width: 700px;
-  height: 60%;
+  gap: 3rem;
 }
-
-
 
 .top {
   display: flex;
@@ -453,6 +471,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   text-align: right;
+  gap: 1rem;
 }
 
 .left button {
@@ -470,8 +489,12 @@ body {
   color: var(--secondaryColor)
 }
 
-
-
+.separator {
+  height: 1px;
+  background: var(--fontColor);
+  width: 100%;
+  opacity: 40%;
+}
 
 .right {
   display: flex;
@@ -479,15 +502,15 @@ body {
 }
 
 .img-container {
-  max-width: 250px;
-  max-height: 250px;
+  height: 300px;
+  width: 300px;
   overflow: hidden;
   border: 1px solid var(--fontColor);
 }
 
 .img {
-  width: 250px;
-  height: 250px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -496,6 +519,7 @@ body {
   justify-content: space-between;
   width: 100%;
   text-align: center;
+  position: relative;
 }
 
 .clock h2 {
@@ -604,5 +628,17 @@ body {
 .color-settings div input, .color-settings div label {
   border: none;
   cursor: pointer;
+}
+
+.add-link-container {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  opacity: 10%;
+  transition: opacity 0.08s ease-in-out;
+}
+
+.add-link-container:hover {
+  opacity: 80%;
 }
 </style>
