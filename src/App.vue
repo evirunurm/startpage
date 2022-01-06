@@ -250,7 +250,8 @@ export default {
         });
       }
     },
-    fetchFact(url) {
+    fetchFact(url)
+    {
       const response = new Promise(async (resolve, reject) => {
         let res = await fetch(url, {
           mode: "cors",

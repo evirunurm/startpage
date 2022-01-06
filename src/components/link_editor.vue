@@ -27,7 +27,7 @@
     </div>
     <div class="link-details" v-show="isEditing">
       <input id="linkName" v-model="link.name" type="text" maxlength="20" >
-      <input v-model="link.url" type="text" maxlength="20">
+      <input v-model="link.url" type="text" maxlength="356">
     </div>
   </div>
 </template>
