@@ -171,35 +171,34 @@ export default {
               name: "discord",
               url: "https://discord.com/channels/@me"
             },{
-              name: "whatsapp",
-              url: "https://discord.com/channels/@me"
+              name: "whatsapp web",
+              url: "https://web.whatsapp.com/"
             },
           ]
         },
         {
-          name: "general",
+          name: "social",
           links: [
             {
-              name: "discord",
-              url: "https://discord.com/channels/@me"
+              name: "instagram",
+              url: "https://www.instagram.com/"
+            },
+            {
+              name: "reddit",
+              url: "https://www.reddit.com/"
             },
           ]
         },
         {
-          name: "general",
+          name: "video",
           links: [
             {
-              name: "discord",
-              url: "https://discord.com/channels/@me"
+              name: "youtube",
+              url: "https://www.youtube.com/"
             },
-          ]
-        },
-        {
-          name: "general",
-          links: [
             {
-              name: "discord",
-              url: "https://discord.com/channels/@me"
+              name: "netflix",
+              url: "https://www.netflix.com/browse"
             },
           ]
         }
