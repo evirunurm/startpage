@@ -22,16 +22,13 @@
         Random
       </button>
     </div>
-
-
-
     <label for="songId" class="info">
       <span class="strong">id</span> : what goes after "v=" in YouTube link.
     </label>
-
+    <div class="volume-container">
+      <input id="volume" @change="playerObj.setVolume(song.volume)" v-model="song.volume" type="range" min="0" max="50" step="2.5">
+    </div>
   </div>
-
-
   <div id="fake-player" style="position:absolute;top:-1500px; right:0px;">
   </div>
 </template>
@@ -50,12 +47,10 @@ export default {
       playing: false,
       song: {
         name: "",
-        id: "5qap5aO4i9A"
+        id: "",
+        volume: ""
       }
     }
-  },
-  props: {
-
   },
   methods: {
     play() {
@@ -137,5 +132,50 @@ export default {
     padding: 0.25em 0.5em;
     cursor: pointer;
   }
+
+  input {
+    padding: 0.25em 0.5em;
+    background-color: var(--backgroundColor);
+    color: var(--fontColor);
+    border: 2px solid var(--fontColor);
+    outline: none;
+  }
+
+  input:focus {
+    color: var(--primaryColor);
+    background: var(--secondaryColor);
+  }
+
+  .volume-container {
+    width: 100%;
+  }
+
+  #volume {
+    margin: 0.85em 0;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 13px;
+    opacity: 0.6;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    cursor: pointer;
+    border: 2px solid var(--primaryColor);
+  }
+
+  #volume:hover {
+    opacity: 1;
+  }
+
+  #volume::-webkit-slider-thumb {
+    position: relative;
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    background: var(--primaryColor);
+  }
+
 </style>
 
