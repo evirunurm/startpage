@@ -26,7 +26,7 @@
       <span class="strong">id</span> : what goes after "v=" in YouTube link.
     </label>
     <div class="volume-container">
-      <input id="volume" @change="playerObj.setVolume(song.volume)" v-model="song.volume" type="range" min="0" max="50" step="2.5">
+      <input id="volume" @change="playerObj.setVolume(song.volume);this.saveLocal();" v-model="song.volume" type="range" min="0" max="50" step="2.5">
     </div>
   </div>
   <div id="fake-player" style="position:absolute;top:-1500px; right:0px;">
@@ -47,7 +47,7 @@ export default {
       playing: false,
       song: {
         name: "",
-        id: "",
+        id: "5qap5aO4i9A",
         volume: ""
       }
     }
@@ -69,6 +69,8 @@ export default {
           },
           onStateChange: function (e) {
             context.song.name = e.target.playerInfo.videoData.title;
+            console.log("saving")
+            context.saveLocal();
           }
         }
       });
@@ -81,10 +83,20 @@ export default {
     },
     setRandom() {
       this.song.id = this.songs[parseInt(Math.random() * this.songs.length)];
+    },
+    saveLocal() {
+      localStorage.setItem("song", JSON.stringify(this.song));
+    },
+    getLocal() {
+      if (localStorage.song) {
+        this.song = JSON.parse(localStorage.getItem("song"));
+      } else {
+        this.setRandom();
+      }
     }
   },
   mounted() {
-    this.setRandom();
+    this.getLocal();
     this.onYouTubePlayerAPIReady(this);
   }
 }
@@ -124,13 +136,25 @@ export default {
     height: 20px;
   }
 
-  #player button:hover {
+  #player button {
+    opacity: 25%;
+  }
 
+  #player button:hover {
+    opacity: 100%;
   }
 
   .random-button {
-    padding: 0.25em 0.5em;
+    padding: 0.45em 0.8em;
+    background: var(--secondaryColor);
+    border: none;
     cursor: pointer;
+    color: var(--primaryColor);
+  }
+
+  .random-button:hover {
+    background: var(--primaryColor);
+    color: var(--secondaryColor);
   }
 
   input {

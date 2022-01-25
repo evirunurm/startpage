@@ -81,7 +81,7 @@
           <input @input="updateColors()" type="color" id="--fontColorColor" v-model="colors.font">
         </div>
       </div>
-      <Player></Player>
+      <Player ></Player>
       <p class="credits">Developed by <a target="_blank" href="https://github.com/evirunurm">Evelin Virunurm</a></p>
     </div>
   </div>
