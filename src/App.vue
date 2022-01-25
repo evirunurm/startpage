@@ -81,6 +81,7 @@
           <input @input="updateColors()" type="color" id="--fontColorColor" v-model="colors.font">
         </div>
       </div>
+      <Player></Player>
       <p class="credits">Developed by <a target="_blank" href="https://github.com/evirunurm">Evelin Virunurm</a></p>
     </div>
   </div>
@@ -89,6 +90,7 @@
 
 <script >
 import LinksContainer from "./components/links_container.vue";
+import Player from "./components/player.vue";
 
 export default {
   data() {
@@ -410,6 +412,7 @@ export default {
   },
   components: {
     LinksContainer,
+    Player
   }
 }
 </script>
