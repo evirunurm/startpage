@@ -29,7 +29,8 @@
       <input id="volume" @change="playerObj.setVolume(song.volume);changeVolumeGradient();this.saveLocal();" v-model="song.volume" type="range" min="0" max="50" step="2.5">
     </div>
   </div>
-  <div id="fake-player" style="position:absolute;top:-1500px; right:0px;">
+<!--  style="position:absolute;top:-1500px; right:0px;"-->
+  <div id="fake-player" >
   </div>
 </template>
 
