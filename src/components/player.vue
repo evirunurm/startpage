@@ -26,7 +26,7 @@
       <span class="strong">id</span> : what goes after "v=" in YouTube link.
     </label>
     <div class="volume-container">
-      <input id="volume" @change="playerObj.setVolume(song.volume);this.saveLocal();" v-model="song.volume" type="range" min="0" max="50" step="2.5">
+      <input id="volume" @change="playerObj.setVolume(song.volume);changeVolumeGradient();this.saveLocal();" v-model="song.volume" type="range" min="0" max="50" step="2.5">
     </div>
   </div>
   <div id="fake-player" style="position:absolute;top:-1500px; right:0px;">
@@ -75,7 +75,7 @@ export default {
         }
       });
     },
-    async setSong(event)  {
+    setSong(event)  {
       if (event.key === "Enter") {
         this.playing = true;
         this.playerObj.loadVideoById(this.song.id);
@@ -93,11 +93,18 @@ export default {
       } else {
         this.setRandom();
       }
+    },
+    changeVolumeGradient() {
+      const el = document.getElementById('volume');
+      el.value = this.song.volume;
+      let value = (el.value - el.min) / (el.max - el.min) * 90;
+      el.style.background = `linear-gradient(to right, var(--primaryColor) 0%, var(--primaryColor) ${value + 5}%, var(--secondaryColor) ${value + 5}%, var(--secondaryColor) 100%`;
     }
   },
   mounted() {
     this.getLocal();
     this.onYouTubePlayerAPIReady(this);
+    this.changeVolumeGradient();
   }
 }
 </script>
@@ -178,27 +185,30 @@ export default {
     margin: 0.85em 0;
     -webkit-appearance: none;
     appearance: none;
+    background: var(--secondaryColor);
     width: 100%;
-    height: 13px;
-    opacity: 0.6;
+    height: 5px;
+    border-radius: 5px;
     -webkit-transition: .2s;
-    transition: opacity .2s;
+    border: none;
     cursor: pointer;
-    border: 2px solid var(--primaryColor);
+    outline: none;
+    transition: background 450ms ease-in;
   }
 
-  #volume:hover {
-    opacity: 1;
-  }
 
   #volume::-webkit-slider-thumb {
-    position: relative;
     -webkit-appearance: none; /* Override default look */
     appearance: none;
-    width: 25px;
-    height: 25px;
+    width: 18px;
+    height: 18px;
     border-radius: 100%;
     background: var(--primaryColor);
+    opacity: 0.6;
+  }
+
+  #volume::-webkit-slider-thumb:hover {
+    opacity: 1;
   }
 
 </style>
