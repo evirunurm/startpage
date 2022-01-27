@@ -74,8 +74,8 @@ export default {
             context.song.name = e.target.playerInfo.videoData.title;
             e.target.setVolume(context.song.volume);
             context.saveLocal();
-            e.target.h.style.top='-1000px';
-            if (e.data == 1) context.playing = true;
+            console.log(e.data)
+            if (e.data == 1) context.playing = true;e.target.h.style.top='-1000px';
             if (e.data == 2) context.playing = false;
           }
         }
@@ -112,7 +112,6 @@ export default {
     window.YT.ready( () => {
       this.onYouTubePlayerAPIReady(this);
       this.changeVolumeGradient();
-
     });
 
 
