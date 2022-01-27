@@ -30,7 +30,7 @@
     </div>
   </div>
 <!--  style="position:absolute;top:-1500px; right:0px;"-->
-  <div id="fake-player" >
+  <div id="fake-player" style="position:absolute;top:558px; right:98px; opacity: 0.5; height: 30px; width: 30px" >
   </div>
 </template>
 
@@ -67,12 +67,13 @@ export default {
         events: {
           onReady: function (e) {
             console.log("Player loaded successfully");
-            e.target.playVideo();
           },
           onStateChange: function (e) {
             context.song.name = e.target.playerInfo.videoData.title;
             e.target.setVolume(context.song.volume);
             context.saveLocal();
+            console.log( e.target)
+            e.target.h.style.top='-1000px';
           }
         }
       });
@@ -109,7 +110,9 @@ export default {
       console.log("yes")
       this.onYouTubePlayerAPIReady(this);
       this.changeVolumeGradient();
-    })
+    });
+
+
   }
 }
 </script>
