@@ -1,23 +1,25 @@
 <template>
-  <p>Now playing...</p>
+  <div class="row">
+    <p>Now playing...</p>
+    <div id="player">
+    <button v-if="!playing" @click="playing=!playing;play()">
+      <svg width="60" height="61" viewBox="0 0 60 61" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M54.6892 23.3446L11.5777 1.78885C6.2585 -0.87075 0 2.99721 0 8.94427V52.0557C0 58.0028 6.25851 61.8708 11.5777 59.2111L54.6892 37.6554C60.5856 34.7072 60.5855 26.2928 54.6892 23.3446Z" fill="black"/>
+      </svg>
+    </button>
+    <button v-if="playing" @click="playing=!playing;pause()">
+      <svg width="57" height="61" viewBox="0 0 57 61" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 9L9 52" stroke="black" stroke-width="17" stroke-linecap="round"/>
+        <path d="M48 9L48 52" stroke="black" stroke-width="17" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  </div>
+
   <p class="title">{{ song.name }}</p>
   <div>
     <div class="song-input-container">
       <input v-model="song.id" id="songId" @keypress="setSong($event)" type="text" placeholder="ENTER to save and play.">
-      <div id="player">
-        <button v-if="!playing" @click="playing=!playing;play()">
-          <svg width="60" height="61" viewBox="0 0 60 61" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M54.6892 23.3446L11.5777 1.78885C6.2585 -0.87075 0 2.99721 0 8.94427V52.0557C0 58.0028 6.25851 61.8708 11.5777 59.2111L54.6892 37.6554C60.5856 34.7072 60.5855 26.2928 54.6892 23.3446Z" fill="black"/>
-          </svg>
-        </button>
-        <button v-if="playing" @click="playing=!playing;pause()">
-          <svg width="57" height="61" viewBox="0 0 57 61" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 9L9 52" stroke="black" stroke-width="17" stroke-linecap="round"/>
-            <path d="M48 9L48 52" stroke="black" stroke-width="17" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-
       <button class="random-button" @click="setRandom();setSong({key: 'Enter'})">
         Random
       </button>
@@ -30,7 +32,7 @@
     </div>
   </div>
 <!--  style="position:absolute;top:-1500px; right:0px;"-->
-  <div id="fake-player" style="position:absolute;top:558px; right:98px; opacity: 0.5; height: 30px; width: 30px" >
+  <div id="fake-player" style="position:absolute;top:455px; right:173px; opacity: 0; height: 30px; width: 30px" >
   </div>
 </template>
 
@@ -72,8 +74,9 @@ export default {
             context.song.name = e.target.playerInfo.videoData.title;
             e.target.setVolume(context.song.volume);
             context.saveLocal();
-            console.log( e.target)
             e.target.h.style.top='-1000px';
+            if (e.data == 1) context.playing = true;
+            if (e.data == 2) context.playing = false;
           }
         }
       });
@@ -107,9 +110,9 @@ export default {
   mounted() {
     this.getLocal();
     window.YT.ready( () => {
-      console.log("yes")
       this.onYouTubePlayerAPIReady(this);
       this.changeVolumeGradient();
+
     });
 
 
@@ -203,7 +206,10 @@ export default {
     outline: none;
     transition: background 450ms ease-in;
   }
-
+.row {
+  display: flex;
+  gap: 1em;
+}
 
   #volume::-webkit-slider-thumb {
     -webkit-appearance: none; /* Override default look */
