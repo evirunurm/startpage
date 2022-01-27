@@ -66,7 +66,8 @@ export default {
         loop: true,
         events: {
           onReady: function (e) {
-            console.log("Player loaded successfully")
+            console.log("Player loaded successfully");
+            e.target.playVideo();
           },
           onStateChange: function (e) {
             context.song.name = e.target.playerInfo.videoData.title;
