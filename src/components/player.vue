@@ -75,7 +75,7 @@ export default {
             e.target.setVolume(context.song.volume);
             context.saveLocal();
             console.log(e.data)
-            if (e.data == 1) context.playing = true;e.target.h.style.top='-1000px';
+            if (e.data == 1) { context.playing = true; e.target.h.style.top='-1000px'; }
             if (e.data == 2) context.playing = false;
           }
         }
