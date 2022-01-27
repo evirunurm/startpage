@@ -69,7 +69,7 @@ export default {
           },
           onStateChange: function (e) {
             context.song.name = e.target.playerInfo.videoData.title;
-            console.log("saving")
+            e.target.setVolume(context.song.volume);
             context.saveLocal();
           }
         }
