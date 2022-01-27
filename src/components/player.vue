@@ -33,8 +33,6 @@
     </div>
   </div>
 <!--  style="position:absolute;top:-1500px; right:0px;"-->
-
-
 </template>
 
 <script>
@@ -84,6 +82,7 @@ export default {
     setSong(event)  {
       if (event.key === "Enter") {
         this.playerObj.loadVideoById(this.song.id);
+        this.song.name = this.playerObj.playerInfo.videoData.title;
         this.pause();
       }
     },
