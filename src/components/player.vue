@@ -103,8 +103,11 @@ export default {
   },
   mounted() {
     this.getLocal();
-    this.onYouTubePlayerAPIReady(this);
-    this.changeVolumeGradient();
+    window.YT.ready( () => {
+      console.log("yes")
+      this.onYouTubePlayerAPIReady(this);
+      this.changeVolumeGradient();
+    })
   }
 }
 </script>
