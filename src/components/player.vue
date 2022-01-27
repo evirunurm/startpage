@@ -32,7 +32,7 @@
     </div>
   </div>
 <!--  style="position:absolute;top:-1500px; right:0px;"-->
-  <div id="fake-player" style="position:absolute;top:455px; right:173px; opacity: 0; height: 30px; width: 30px" >
+  <div id="fake-player" style="pointer-events:none;position:absolute;top:455px; right:150px; opacity: 0.5; height: 30px; width: 30px" >
   </div>
 </template>
 
@@ -76,15 +76,15 @@ export default {
             context.saveLocal();
             console.log(e.data)
             if (e.data == 1) { context.playing = true; e.target.h.style.top='-1000px'; }
-            if (e.data == 2) context.playing = false;
+            if (e.data == 2) { context.playing = false; }
           }
         }
       });
     },
     setSong(event)  {
       if (event.key === "Enter") {
-        this.playing = true;
         this.playerObj.loadVideoById(this.song.id);
+        this.pause();
       }
     },
     setRandom() {
