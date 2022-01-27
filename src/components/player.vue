@@ -14,6 +14,7 @@
       </svg>
     </button>
   </div>
+    <div id="fake-player" style=";position:relative;right:15%;bottom:5px;opacity: 0; height: 30px; width: 30px" ></div>
   </div>
 
   <p class="title">{{ song.name }}</p>
@@ -32,8 +33,8 @@
     </div>
   </div>
 <!--  style="position:absolute;top:-1500px; right:0px;"-->
-  <div id="fake-player" style="pointer-events:none;position:absolute;top:455px; right:150px; opacity: 0.5; height: 30px; width: 30px" >
-  </div>
+
+
 </template>
 
 <script>
@@ -74,7 +75,6 @@ export default {
             context.song.name = e.target.playerInfo.videoData.title;
             e.target.setVolume(context.song.volume);
             context.saveLocal();
-            console.log(e.data)
             if (e.data == 1) { context.playing = true; e.target.h.style.top='-1000px'; }
             if (e.data == 2) { context.playing = false; }
           }
