@@ -17,7 +17,7 @@
     </div>
     <section id="folderEditor" class="folder-editor" v-show="isEditing">
       <input class="input-name" v-model="name" type="text" maxlength="20">
-      <link_editor v-on:deleteLink="deleteLink" v-for="link in links" :link=link />
+      <link_editor v-on:deleteLink="deleteLink" v-for="link in links" :link=link v-bind:key="link" />
       <div class="editor-options">
         <button class="add-link" id="addLink" @click="addLink">
           <svg width="18" height="18" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,7 +34,7 @@
     </section>
   </article>
   <article class="links font--light">
-    <p v-for="link in links" class="link"><a target="_blank" :href="link.url">{{ link.name }}</a></p>
+    <p v-for="link in links" class="link" v-bind:key="link" ><a target="_blank" :href="link.url">{{ link.name }}</a></p>
   </article>
 </div>
 </template>

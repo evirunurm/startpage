@@ -20,7 +20,7 @@
       </section>
       <div class="separator"></div>
       <section class="bottom">
-        <links-container v-on:deleteContainer="deleteShortcut" v-on:modifyShortcuts="modifyShortcuts" v-for="shortcut in shortcuts" :name=shortcut.name :links=shortcut.links :index="shortcuts.indexOf(shortcut)"/>
+        <links-container v-on:deleteContainer="deleteShortcut" v-on:modifyShortcuts="modifyShortcuts" v-for="shortcut in shortcuts" :name=shortcut.name :links=shortcut.links :index="shortcuts.indexOf(shortcut)" v-bind:key="shortcut.name"/>
         <div v-if="shortcuts.length < 4" class="add-link-container" @click="addShortcut">
           <svg width="18" height="18" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M22 4V39" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -38,7 +38,7 @@
       <div class="settings-content" v-show="isOptionsOpen">
         <div class="facts-settings">
           <p>Facts :</p>
-          <div  v-for="fact in factsTypes" class="facts-settings__fact">
+          <div v-for="fact in factsTypes" class="facts-settings__fact" v-bind:key="fact.id">
             <input @input="updateFact(fact);saveDataToLocal();" :id="fact.id" type="radio" name="fact" :value="fact.id" :checked="fact.id == selectedFactsType.id">
             <label :for="fact.id">{{ fact.name }}</label>
           </div>
@@ -52,7 +52,7 @@
             </div>
               <div class="image-settings-names" >
                   <div id="imageSlider" ref="imageSlider" class="image-settings-name">
-                    <p v-for="image in images" class="image-name">{{ image.name }}</p>
+                    <p v-for="image in images" class="image-name" v-bind:key="image.name">{{ image.name }}</p>
                   </div>
               </div>
             <div class="image-settings-arrow" @click="moveImageSlider('right');saveDataToLocal();">
@@ -61,6 +61,9 @@
               </svg>
             </div>
           </div>
+        </div>
+        <div>
+          <input @input="loadImage" type="file" accept="image/png, image/jpeg, image/gif">
         </div>
         <div class="color-settings">
           <p>Colors :</p>
@@ -81,7 +84,6 @@
             <input @input="updateColors()" type="color" id="--fontColorColor" v-model="colors.font">
           </div>
         </div>
-        <Player ></Player>
         <p class="credits">Developed by <a target="_blank" href="https://github.com/evirunurm">Evelin Virunurm</a></p>
       </div>
     </div>
@@ -90,7 +92,6 @@
 
 <script >
   import LinksContainer from "./components/links_container.vue";
-  import Player from "./components/player.vue";
 
   export default {
     data() {
@@ -109,16 +110,6 @@
             name: "Cats",
             id: "cats",
             url: "https://catfact.ninja/fact",
-          },
-          {
-            name: "Dogs",
-            id: "dogs",
-            url: "https://dog-api.kinduff.com/api/facts",
-          },
-          {
-            name: "Axolotls",
-            id: "axolotls",
-            url: "https://axoltlapi.herokuapp.com/",
           },
           {
             name: "Anime Quotes",
@@ -213,6 +204,7 @@
         },
         time: "",
         date: "",
+        customImage: null
       }
     },
     methods: {
@@ -294,9 +286,16 @@
         if (localStorage.colors) {
           this.colors = JSON.parse(localStorage.getItem("colors"));
         }
+        if (localStorage.customImage) {
+          this.customImage = JSON.parse(localStorage.getItem("customImage"));
+        }
       },
       saveDataToLocal() {
-        localStorage.setItem("selectedImage", JSON.stringify(this.selectedImage));
+        try {
+          localStorage.setItem("selectedImage", JSON.stringify(this.selectedImage));
+        } catch {
+          alert("The provided image is too heavy to save it:( Sorry!");
+        }
         localStorage.setItem("selectedFactsType", JSON.stringify(this.selectedFactsType));
         localStorage.setItem("shortcuts", JSON.stringify(this.shortcuts));
         localStorage.setItem("colors", JSON.stringify(this.colors));
@@ -398,6 +397,23 @@
           alert("There's a maximum amount of 4 folders, sorry:))");
         }
         this.saveDataToLocal();
+      },
+      loadImage(event) {
+        var file = (event.target.files || event.dataTransfer.files)[0];
+        this.readFile(file);
+      },
+      readFile(file) {
+        const fileReader = new FileReader();
+        if (file && file.type.includes("image")) {
+          fileReader.readAsDataURL(file);
+          fileReader.onload = (event) => {
+            this.updateImage({
+              name: "Custom image",
+              url: event.target.result
+            });
+            this.saveDataToLocal();
+          };
+        }
       }
     },
     mounted() {
@@ -412,7 +428,6 @@
     },
     components: {
       LinksContainer,
-      Player
     }
   }
 </script>
@@ -458,6 +473,22 @@
 
   a:hover {
     text-decoration: line-through;
+  }
+
+  button {
+    font-size: 1rem;
+    border: none;
+    align-self: end;
+    padding: 0.4rem 1.25rem;
+    background: var(--secondaryColor);
+    color: var(--primaryColor);
+    cursor: pointer;
+    transition: 0.08s ease-in-out;
+  }
+
+  button:hover {
+    background: var(--primaryColor);
+    color: var(--secondaryColor)
   }
 
   .font--light {
