@@ -1,6 +1,6 @@
 <template>
 <div class="links-container">
-  <article :id="index + 'folder'" class="links-folder" @mouseover="hover = true"  @mouseleave="hover = false">
+  <article class="links-folder" @mouseover="hover = true"  @mouseleave="hover = false">
     <h3 class="links-folder-name font--light" >{{ name }}</h3>
     <div class="links-folder--edit" v-show="hover" @click="isEditing = !isEditing;checkEditorPosition(this);">
       <svg width="15" height="15" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -15,7 +15,11 @@
         <path d="M35 4L4 35" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
-    <section id="folderEditor" class="folder-editor" v-show="isEditing">
+  </article>
+  <article class="links font--light">
+    <p v-for="link in links" class="link" v-bind:key="link" ><a target="_blank" :href="link.url">{{ link.name }}</a></p>
+  </article>
+  <section :id="index + 'folder'" class="folder-editor" v-show="isEditing">
       <input class="input-name" v-model="name" type="text" maxlength="20">
       <link_editor v-on:deleteLink="deleteLink" v-for="link in links" :link=link v-bind:key="link" />
       <div class="editor-options">
@@ -32,10 +36,6 @@
         </button>
       </div>
     </section>
-  </article>
-  <article class="links font--light">
-    <p v-for="link in links" class="link" v-bind:key="link" ><a target="_blank" :href="link.url">{{ link.name }}</a></p>
-  </article>
 </div>
 </template>
 
@@ -175,7 +175,9 @@ a:hover {
   border: 1px solid var(--fontColor);
   background: var(--backgroundColor);
   position: absolute;
-  left: 80%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 10;
   box-shadow: 0px 0px 20px 0px rgba(61, 36, 36, 0.2);
   display: flex;
@@ -183,6 +185,10 @@ a:hover {
   justify-content: space-between;
   padding: 1.5rem;
   gap: 0.5rem;
+}
+
+.folder-editor:before {
+  content: "";
 }
 
 .editor--save {

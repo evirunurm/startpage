@@ -1,0 +1,172 @@
+<template>
+    <div id="settings" class="settings-container" >
+      <div class="settings-button"  @click="isOptionsOpen = !isOptionsOpen">
+        <svg width="35" height="35" viewBox="0 0 64 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M22.6147 4.05687C23.067 1.70215 25.1272 0 27.5249 0H36.627C39.0834 0 41.176 1.78426 41.5642 4.20975L42.539 10.2998C44.189 11.0583 45.7446 11.987 47.1833 13.0634L52.8445 11.124C55.1061 10.3492 57.5997 11.2837 58.7951 13.3541L63.1526 20.9016C64.3778 23.0237 63.8846 25.7209 61.9878 27.2721L57.3477 31.0669C57.4289 31.8971 57.4704 32.7389 57.4704 33.5904C57.4704 34.7404 57.3947 35.8726 57.2479 36.9824L61.9461 40.7708C63.8638 42.3171 64.3694 45.0297 63.1377 47.1631L58.8123 54.6549C57.6093 56.7386 55.0927 57.67 52.823 56.8716L46.4658 54.6353C45.6284 55.218 44.7545 55.752 43.8483 56.2331L42.627 63.0612C42.2006 65.4452 40.127 67.1809 37.7051 67.1809H27.6012C25.2442 67.1809 23.2072 65.5347 22.7126 63.2301L21.3701 56.9755C19.93 56.3291 18.5604 55.5535 17.2761 54.6636L10.9993 56.8716C8.72959 57.67 6.21305 56.7386 5.01001 54.6549L0.68459 47.1631C-0.547114 45.0297 -0.0414361 42.3171 1.87622 40.7708L6.46515 37.0706C6.3106 35.9326 6.23077 34.7708 6.23077 33.5904C6.23077 32.7066 6.27552 31.8333 6.36288 30.9726L1.83584 27.272C-0.0616392 25.721 -0.55522 23.0232 0.670158 20.9008L5.0267 13.355C6.22227 11.2843 8.71667 10.3498 10.9785 11.1254L16.5533 13.0368C18.0626 11.9117 19.7 10.9489 21.4397 10.1743L22.6147 4.05687ZM31.8301 18.2185C23.3499 18.2296 16.4787 25.1076 16.4787 33.5904C16.4787 42.0801 23.361 48.9623 31.8506 48.9623C40.3403 48.9623 47.2225 42.0801 47.2225 33.5904C47.2225 25.1076 40.3514 18.2296 31.8711 18.2185H31.8301Z" fill="white"/>
+        </svg>
+      </div>
+      <div class="settings-content" v-show="isOptionsOpen">
+        <div class="facts-settings">
+          <p>Facts :</p>
+          <div v-for="fact in factsTypes" class="facts-settings__fact" v-bind:key="fact.id">
+            <input @input="updateFact(fact);emitSaveData();" :id="fact.id" type="radio" name="fact" :value="fact.id" :checked="fact.id == selectedFactsType.id">
+            <label :for="fact.id">{{ fact.name }}</label>
+          </div>
+        </div>
+        <div class="image-settings-container">
+          <div class="image-settings" >
+            <div class="image-settings-arrow" @click="moveImageSlider('left');emitSaveData();">
+              <svg width="20" height="20" viewBox="0 0 35 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.52393 18.577L21.6225 2.14536C26.7627 -2.5214 35 1.12576 35 8.06841V40.9316C35 47.8742 26.7627 51.5214 21.6225 46.8546L3.52393 30.423C0.0272703 27.2484 0.0272703 21.7516 3.52393 18.577Z" fill="white"/>
+              </svg>
+            </div>
+              <div class="image-settings-names" >
+                  <div id="imageSlider" ref="imageSlider" class="image-settings-name">
+                    <p v-for="image in images" class="image-name" v-bind:key="image.name">{{ image.name }}</p>
+                  </div>
+              </div>
+            <div class="image-settings-arrow" @click="moveImageSlider('right');emitSaveData();">
+              <svg width="20" height="20" viewBox="0 0 35 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M31.4761 18.577L13.3775 2.14536C8.2373 -2.5214 0 1.12576 0 8.06841V40.9316C0 47.8742 8.2373 51.5214 13.3775 46.8546L31.4761 30.423C34.9727 27.2484 34.9727 21.7516 31.4761 18.577Z" fill="white"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div>
+          <input @input="loadImage" type="file" accept="image/png, image/jpeg, image/gif">
+        </div>
+        <div class="color-settings">
+          <p>Colors :</p>
+          <div>
+            <label for="--primaryColor">Primary</label>
+            <input @input="updateColors()" type="color" id="--primaryColor" v-model="colors.primary">
+          </div>
+          <div>
+            <label for="--secondaryColor">Secondary</label>
+            <input @input="updateColors()" type="color" id="--secondaryColor" v-model="colors.secondary">
+          </div>
+          <div>
+            <label for="--backgroundColor">Background</label>
+            <input @input="updateColors()" type="color" id="--backgroundColor" v-model="colors.background">
+          </div>
+          <div>
+            <label for="--fontColorColor">Font</label>
+            <input @input="updateColors()" type="color" id="--fontColorColor" v-model="colors.font">
+          </div>
+        </div>
+        <p class="credits">Developed by <a target="_blank" href="https://github.com/evirunurm">Evelin Virunurm</a></p>
+      </div>
+    </div>
+</template>
+
+<script>
+export default {
+  name: "settings.vue",
+  props: {
+    colors: Object,
+    factsTypes: Array,
+    selectedFactsType: Object,
+    images: Array,
+    isOptionsOpen: Boolean,
+    moveImageSliderX: Function,
+    selectedImage: Object
+  },
+  data() {
+    return {
+      
+    }
+  },
+  methods: {
+    moveImageSlider(direction) {
+        const currentIndex = this.images.indexOf(this.images.find( image => {
+          return this.selectedImage.name == image.name;
+        }));
+        this.$refs.imageSlider.style.left = `-${ currentIndex * 200 }px`;
+        // Moving the slider
+        if (direction) {
+          let nextIndex;
+          if (direction == "left") {
+            nextIndex = (currentIndex == 0) ? this.images.length - 1 : currentIndex - 1;
+          } else if (direction == "right") {
+            nextIndex = (currentIndex == this.images.length - 1) ? 0 : currentIndex + 1;
+          }
+          this.emitUpdateImage(this.images[nextIndex]);
+          this.$refs.imageSlider.style.left = `-${ nextIndex * 200 }px`;
+          this.emitSaveData();
+        }
+      },
+      updateFact(factsType) {
+        if (factsType?.id == "off") {
+          this.selectedFactsType.fact = "";
+          this.selectedFactsType.id = "off";
+          return;
+        } else {
+          this.selectedFactsType.id = factsType.id;
+          this.selectedFactsType.url = factsType.url;
+          this.fetchFact(this.selectedFactsType.url).then((fact) => {
+            this.selectedFactsType.fact = fact;
+            this.emitSaveData();
+          });
+        }
+      },
+      fetchFact(url)
+      {
+        const response = new Promise(async (resolve, reject) => {
+          let res = await fetch(url, {
+            mode: "cors",
+          });
+          let json = await res.json();
+          let fact;
+          switch (this.selectedFactsType.id) {
+            case "cats":
+              fact = json.fact;
+              break;
+            case "dogs":
+              fact = json.facts[0];
+              break;
+            case "axolotls":
+              fact = json.facts;
+              break;
+            case "anime_quotes":
+              fact = json.quote;
+              break;
+            default:
+              fact = "";
+          }
+          resolve(fact);
+        });
+        return response;
+      },
+      loadImage(event) {
+        var file = (event.target.files || event.dataTransfer.files)[0];
+        this.readFile(file);
+      },
+      readFile(file) {
+        const fileReader = new FileReader();
+        if (file && file.type.includes("image")) {
+          fileReader.readAsDataURL(file);
+          fileReader.onload = (event) => {
+            this.emitUpdateImage({
+              name: "Custom image",
+              url: event.target.result
+            });
+            this.emitSaveData();
+          };
+        }
+      },
+      emitSaveData() {
+        this.$emit('saveData');
+      },
+      emitUpdateImage(image) {
+        this.$emit('updateImage', image);
+      }
+  },
+  mounted() {
+
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
