@@ -2,7 +2,7 @@
 <div class="links-container">
   <article :id="index + 'folder'" class="links-folder" @mouseover="hover = true"  @mouseleave="hover = false">
     <h3 class="links-folder-name font--light" >{{ name }}</h3>
-    <div class="links-folder--edit" v-show="hover" @click="isEditing = !isEditing;checkEditorPosition(this);">
+    <div class="links-folder--edit" v-show="hover" @click="isEditing = !isEditing;">
       <svg width="15" height="15" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M54.7132 24.0924L24.0596 54.7461L15.3606 46.0471L46.0142 15.3934L54.7132 24.0924Z" fill="white" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M63.695 15.3934L54.6064 6.30492L55.0829 5.82843C56.645 4.26633 59.1777 4.26633 60.7398 5.82843L64.1715 9.2601C65.7336 10.8222 65.7336 13.3549 64.1715 14.917L63.695 15.3934Z" fill="white" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -17,7 +17,7 @@
     </div>
     <section id="folderEditor" class="folder-editor" v-show="isEditing">
       <input class="input-name" v-model="name" type="text" maxlength="20">
-      <link_editor v-on:deleteLink="deleteLink" v-for="link in links" :link=link />
+      <link_editor v-on:deleteLink="deleteLink" v-for="link in links" :link=link v-bind:key="link" />
       <div class="editor-options">
         <button class="add-link" id="addLink" @click="addLink">
           <svg width="18" height="18" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,7 +34,7 @@
     </section>
   </article>
   <article class="links font--light">
-    <p v-for="link in links" class="link"><a target="_blank" :href="link.url">{{ link.name }}</a></p>
+    <p v-for="link in links" class="link" v-bind:key="link" ><a target="_blank" :href="link.url">{{ link.name }}</a></p>
   </article>
 </div>
 </template>
@@ -81,7 +81,7 @@ export default {
       document.addEventListener('keydown', (event) => {
         if (event.key == 'Enter' && this.isEditing == true) {
           this.saveOptions();
-          this.isEditing = false;
+
         }
       });
     },
@@ -98,9 +98,6 @@ export default {
       document.body.removeEventListener("mousedown", this.removePopupListener);
       this.isEditing = false;
       this.$emit('deleteContainer', this.index);
-    },
-    checkEditorPosition(e) {
-      console.log(e)
     }
   },
   mounted() {
