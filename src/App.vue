@@ -119,6 +119,11 @@
             url: "https://dog-api.kinduff.com/api/facts",
           },
           {
+            name: "Jokes",
+            id: "jokes",
+            url: "https://official-joke-api.appspot.com/random_joke",
+          },
+          {
             name: "Off",
             id: "off",
           }
@@ -260,6 +265,9 @@
               break;
             case "dogs":
               fact = json.facts[0];
+              break;
+            case "jokes":
+              fact = json.setup + " " + json.punchline;
               break;
             default:
               fact = "";
