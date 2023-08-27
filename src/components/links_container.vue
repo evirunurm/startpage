@@ -142,6 +142,7 @@ a:hover {
 
 .links-folder-name {
   color: var(--primaryColor);
+  font-weight: bold;
 }
 
 .links-folder--edit {
@@ -178,13 +179,13 @@ a:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 0.5rem 1.5rem;
   gap: 0.5rem;
 }
 
 .editor--save {
   cursor: pointer;
-  align-self: center;
+  align-self: flex-end;
   opacity: 20%;
   transition: opacity 0.08s ease-in-out;
 }
@@ -193,11 +194,13 @@ a:hover {
   cursor: pointer;
   opacity: 20%;
   transition: opacity 0.08s ease-in-out;
-  align-self: flex-start;
+  align-self: center;
+  padding: 0;
 }
 
 .add-link:hover, .editor--save:hover {
   opacity: 80%;
+  background: none;
 }
 
 .input-name {

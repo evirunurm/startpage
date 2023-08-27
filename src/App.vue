@@ -63,9 +63,10 @@
             </div>
           </div>
         </div>
-        <div>
+        <label class="image-file-upload">
           <input @input="loadImage" type="file" accept="image/png, image/jpeg, image/gif">
-        </div>
+          Upload image
+        </label>
         <div class="color-settings">
           <p>Colors :</p>
           <div>
@@ -398,9 +399,11 @@
         this.time = date.getHours().toString().padStart(2,'0') + ":" + date.getMinutes().toString().padStart(2,'0');
       },
       deleteShortcut(index) {
-        console.log("done")
-        this.shortcuts.splice(index,1);
-        this.saveDataToLocal();
+        let confirmed = confirm("You sure you want to delete this?");
+        if (confirmed) {
+          this.shortcuts.splice(index,1);
+          this.saveDataToLocal();
+        }
       },
       addShortcut() {
         if (this.shortcuts.length < 4) {
@@ -474,18 +477,25 @@
     color: var(--primaryColor);
   }
 
-  button {
+  input[type="file"] {
+    display: none;
+  }
+
+  .image-file-upload, button {
     font-size: 1rem;
     border: none;
-    align-self: end;
     padding: 0.4rem 1.25rem;
     background: var(--secondaryColor);
     color: var(--primaryColor);
     cursor: pointer;
     transition: 0.08s ease-in-out;
+  } 
+
+  button {
+    align-self: end;
   }
 
-  button:hover {
+  button:hover, .image-file-upload:hover {
     background: var(--primaryColor);
     color: var(--secondaryColor)
   }
@@ -688,6 +698,7 @@
     cursor: pointer;
     position: absolute;
     right: 0;
+    top: -2rem;
     opacity: 10%;
     transition: opacity 0.08s ease-in-out;
   }

@@ -45,11 +45,9 @@ export default {
   },
   methods: {
     deleteLink() {
+      let confirmedDeletion = confirm("You sure you want to delete this?");
       this.$emit("deleteLink", this.link);
     },
-  },
-  mounted() {
-
   }
 }
 </script>
@@ -58,6 +56,10 @@ export default {
 button {
   background: none;
   border: none;
+}
+
+button:hover {
+  background: none;
 }
 
 .link-title {
