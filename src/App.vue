@@ -297,14 +297,11 @@
         localStorage.setItem("selectedFactsType", JSON.stringify(this.selectedFactsType));
         localStorage.setItem("shortcuts", JSON.stringify(this.shortcuts));
         localStorage.setItem("colors", JSON.stringify(this.colors));
-        this.showSavedDataMessage();
       },
       modifyShortcuts(index, name, links) {
         this.shortcuts[index].name = name;
         this.shortcuts[index].links = links;
         this.saveDataToLocal();
-      },
-      showSavedDataMessage() {
       },
       prepareToClosePopup() {
         document.body.addEventListener("mousedown", (event) => {
