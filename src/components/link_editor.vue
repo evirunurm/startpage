@@ -45,8 +45,10 @@ export default {
   },
   methods: {
     deleteLink() {
-      let confirmedDeletion = confirm("You sure you want to delete this?");
-      this.$emit("deleteLink", this.link);
+      let confirmed = confirm("You sure you want to delete this?");
+      if (confirmed) {
+        this.$emit("deleteLink", this.link);
+      }
     },
   }
 }
