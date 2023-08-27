@@ -142,7 +142,7 @@ a:hover {
 
 .links-folder-name {
   color: var(--primaryColor);
-  font-weight: bold;
+  font-weight: 500;
 }
 
 .links-folder--edit {
