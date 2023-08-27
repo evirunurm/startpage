@@ -53,6 +53,7 @@
               <div class="image-settings-names" >
                   <div id="imageSlider" ref="imageSlider" class="image-settings-name">
                     <p v-for="image in images" class="image-name" v-bind:key="image.name">{{ image.name }}</p>
+                    <p v-for="image in images" class="image-name" v-bind:key="image.name">{{ image.name }}</p>
                   </div>
               </div>
             <div class="image-settings-arrow" @click="moveImageSlider('right');saveDataToLocal();">
@@ -259,12 +260,6 @@
             case "dogs":
               fact = json.facts[0];
               break;
-            case "axolotls":
-              fact = json.facts;
-              break;
-            case "anime_quotes":
-              fact = json.quote;
-              break;
             default:
               fact = "";
           }
@@ -289,6 +284,9 @@
         if (localStorage.customImage) {
           this.customImage = JSON.parse(localStorage.getItem("customImage"));
         }
+        if (localStorage.customImage) {
+          this.customImage = JSON.parse(localStorage.getItem("customImage"));
+        }
       },
       saveDataToLocal() {
         try {
@@ -299,11 +297,14 @@
         localStorage.setItem("selectedFactsType", JSON.stringify(this.selectedFactsType));
         localStorage.setItem("shortcuts", JSON.stringify(this.shortcuts));
         localStorage.setItem("colors", JSON.stringify(this.colors));
+        this.showSavedDataMessage();
       },
       modifyShortcuts(index, name, links) {
         this.shortcuts[index].name = name;
         this.shortcuts[index].links = links;
-        this.saveDataToLocal()
+        this.saveDataToLocal();
+      },
+      showSavedDataMessage() {
       },
       prepareToClosePopup() {
         document.body.addEventListener("mousedown", (event) => {
@@ -711,10 +712,5 @@
       align-items: center;
       padding: 3em 0 0 0 ;
     }
-
-    .img-container {
-
-    }
-
   }
 </style>
