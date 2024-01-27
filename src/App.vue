@@ -67,6 +67,13 @@
           <input @input="loadImage" type="file" accept="image/png, image/jpeg, image/gif">
           Upload image
         </label>
+        <div class="time-settings">
+          <p>Time format :</p>
+          <div class="facts-settings__fact"  v-for="timeFormat in timeFormats" v-bind:key="timeFormat.id">
+            <input @input="updateTimeFormat(timeFormat);saveDataToLocal();" :id="timeFormat.id" type="radio" name="timeFormat" :value="timeFormat.format" :checked="timeFormat.id == selectedTimeFormat">
+            <label :for="timeFormat.id">{{ timeFormat.name }}</label>
+          </div>
+        </div>
         <div class="color-settings">
           <p>Colors :</p>
           <div>
@@ -98,6 +105,7 @@
   export default {
     data() {
       return {
+        selectedTimeFormat: 2,
         selectedImage: {
           name: "Street",
           url: "/images/background01.png",
@@ -162,6 +170,17 @@
             url: "/images/background08.png",
           }
         ],
+        timeFormats: [
+          {
+            id: 1,
+            name: "12-hour",
+            format: "12"
+          },
+          {
+            id: 2,
+            name: "24-hour",
+            format: "24"
+          }],
         isOptionsOpen: false,
         shortcuts: [
           {
@@ -215,6 +234,10 @@
       }
     },
     methods: {
+      updateTimeFormat(timeFormat) {
+        console.log(timeFormat.format)
+        this.selectedTimeFormat = timeFormat.id;
+      } ,
       updateImage(image) {
         this.selectedImage.url = image.url;
         this.selectedImage.name = image.name;
@@ -293,8 +316,8 @@
         if (localStorage.customImage) {
           this.customImage = JSON.parse(localStorage.getItem("customImage"));
         }
-        if (localStorage.customImage) {
-          this.customImage = JSON.parse(localStorage.getItem("customImage"));
+        if (localStorage.selectedTimeFormat) {
+          this.selectedTimeFormat = JSON.parse(localStorage.getItem("selectedTimeFormat"));
         }
       },
       saveDataToLocal() {
@@ -303,6 +326,7 @@
         } catch {
           alert("The provided image is too heavy to save it:( Sorry!");
         }
+        localStorage.setItem("selectedTimeFormat", JSON.stringify(this.selectedTimeFormat));
         localStorage.setItem("selectedFactsType", JSON.stringify(this.selectedFactsType));
         localStorage.setItem("shortcuts", JSON.stringify(this.shortcuts));
         localStorage.setItem("colors", JSON.stringify(this.colors));
@@ -404,7 +428,15 @@
       },
       getTime() {
         const date = new Date();
-        this.time = date.getHours().toString().padStart(2,'0') + ":" + date.getMinutes().toString().padStart(2,'0');
+        switch (this.selectedTimeFormat) {
+          case 1:
+            this.time = this.formatAMPM(date);
+            break;
+          case 2:
+            this.time = date.getHours().toString().padStart(2,'0') + ":" + date.getMinutes().toString().padStart(2,'0');
+            break;
+        }
+       
       },
       deleteShortcut(index) {
         let confirmed = confirm("You sure you want to delete this?");
@@ -412,6 +444,16 @@
           this.shortcuts.splice(index,1);
           this.saveDataToLocal();
         }
+      },
+      formatAMPM(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
       },
       addShortcut() {
         if (this.shortcuts.length < 4) {
